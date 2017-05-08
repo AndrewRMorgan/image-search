@@ -1,0 +1,31 @@
+<html lang='en'>
+  <head>
+    <meta charset="UTF-8">
+    <title>Image Search Abstraction Layer</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="Image Search Abstraction Layer">
+    <meta name="author" content="AndrewRMorgan">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <div class='container-fluid container'>
+      <h1>FreeCodeCamp API: Image Search Abstraction Layer</h1>
+      <blockquote>
+      	User stories:
+      	<ul>1) I can get the image URLs, alt text and page urls for a set of images relating to a given search string.</ul>
+      	<ul>2) I can paginate through the responses by adding a ?offset=2 parameter to the URL.</ul>
+      	<ul>3) I can get a list of the most recently submitted search strings.</ul>
+      </blockquote>
+      <h3>Example creation usage:</h3>
+      <code>https://morning-retreat-24523.herokuapp.com/new/https://www.google.com</code><br/>
+      <h3>Example creation output:</h3>
+      <code>{ "original_url":"https://www.google.com", "short_url":"https://morning-retreat-24523.herokuapp.com/get/3578" }</code>
+      <h3>Usage:</h3>
+      <code>https://morning-retreat-24523.herokuapp.com/get/3578</code>
+      <h3>Will redirect to:</h3>
+      <code>https://www.google.com/</code>
+    </div>
+  </body>
+</html>
