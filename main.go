@@ -40,8 +40,22 @@ func main() {
 	http.ListenAndServe(":"+port, router)
 }
 
+//API Url: "https://www.googleapis.com/customsearch/v1?key=" + config.API + "&cx=" + config.Cx "&q=" + query + ""
+
 func getQuery(res http.ResponseWriter, req http.Request, ps httprouter.Params) {
   query := ps.ByName("queries")
+
+	request, err := http.NewRequest("GET", url, nil)
+	check(err)
+
+	client := &http.Client{}
+
+	resp, err := client.Do(request)
+	check(err)
+
+	defer resp.Body.Close()
+
+
 }
 
 func getLatest(res http.ResponseWriter, req http.Request, _ httprouter.Params) {
@@ -55,5 +69,14 @@ func index(res http.ResponseWriter, req http.Request, _ httprouter.Params) {
 func check(err error) {
 	if err != nil {
 		fmt.Println("Error: ", err)
+	}
+}
+
+func makeList(img) {
+	return {
+		"url": img.url,
+		"snippet": img.title,
+		"thumbnail": img.thumbnail.url,
+		"context": img.sourceUrl
 	}
 }
