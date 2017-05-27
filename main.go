@@ -137,13 +137,6 @@ func check(err error) {
 	}
 }
 
-func getImages(body []byte) (*GoogleAPIResponse, error) {
-	var response = new(GoogleAPIResponse)
-	err := json.Unmarshal(body, &response)
-	check(err)
-	return response, err
-}
-
 func addImages(dataArr []Item) ImageList {
 	var imageList ImageList
 
