@@ -18,22 +18,17 @@
       	<ul>2) I can paginate through the responses by adding a ?offset=2 parameter to the URL.</ul>
       	<ul>3) I can get a list of the most recently submitted search strings.</ul>
       </blockquote>
-      <h3>Example creation usage:</h3>
+      <h3>Image Search Example:</h3>
       <code>https://mysterious-plateau-36613.herokuapp.com/api/imagesearch/funny%20dog%20photos</code><br/>
-      <h3>Example creation output:</h3>
-      <code>{
-url: "https://i.ytimg.com/vi/GF60Iuh643I/hqdefault.jpg",
-snippet: "Funny Dogs - A Funny Dog Videos Compilation 2015 - YouTube",
-thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6qlPomJo0DJyIx5gyvyeqQZyRJHkcPdmnAXXVwRGN_Z6v63XoHQvcj3w",
-context: "https://www.youtube.com/watch?v=GF60Iuh643I"
-}</code>
-      <h3>Example to get the most recently submitted search strings:</h3>
+      <h3>Output:</h3>
+      <code>{ url: "https://i.ytimg.com/vi/GF60Iuh643I/hqdefault.jpg",<br>
+        snippet: "Funny Dogs - A Funny Dog Videos Compilation 2015 - YouTube",<br>
+        thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6qlPomJo0DJyIx5gyvyeqQZyRJHkcPdmnAXXVwRGN_Z6v63XoHQvcj3w",<br>
+        context: "https://www.youtube.com/watch?v=GF60Iuh643I" }</code>
+      <h3>Recently Searched Strings Example:</h3>
       <code>https://mysterious-plateau-36613.herokuapp.com/api/latest/imagesearch</code>
-      <h3>Will output:</h3>
-      <code>{
-term: "funny dog photos",
-when: "2017-05-30T10:01:12Z"
-}</code>
+      <h3>utput:</h3>
+      <code>{ term: "funny dog photos", when: "2017-05-30T10:01:12Z" }</code>
     </div>
   </body>
 </html>
