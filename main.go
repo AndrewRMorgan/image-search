@@ -16,8 +16,10 @@ import (
 var (
 	db      *sql.DB
 	err     error
-	config  Config
+	API     string
+	Cx      string
 	history History
+	// config  Config
 )
 
 type GoogleAPIResponse struct {
@@ -44,11 +46,11 @@ type Image struct {
 	Context   string `json:"context"`
 }
 
-type Config struct {
+/*type Config struct {
 	API string
 	Cx  string
 	Db  string
-}
+}*/
 
 type History struct {
 	Searches []Search
@@ -60,13 +62,16 @@ type Search struct {
 }
 
 func main() {
-	file, err := os.Open("config.json")
-	check(err)
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&config)
-	check(err)
+	// file, err := os.Open("config.json")
+	// check(err)
+	// decoder := json.NewDecoder(file)
+	// err = decoder.Decode(&config)
+	// check(err)
+	// databaseURI := config.Db
 
-	databaseURI := config.Db
+	databaseURI := os.Getenv("MYSQL_URL")
+	API = os.Getenv("API_KEY")
+	Cx = os.Getenv("CX")
 
 	db, err = sql.Open("mysql", databaseURI)
 	check(err)
@@ -100,9 +105,9 @@ func getQuery(res http.ResponseWriter, req *http.Request, ps httprouter.Params) 
 	var url string
 
 	if offset != "" {
-		url = fmt.Sprintf("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&start=%s&searchType=image", config.API, config.Cx, safeQuery, offset)
+		url = fmt.Sprintf("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&start=%s&searchType=image", API, Cx, safeQuery, offset)
 	} else {
-		url = fmt.Sprintf("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&searchType=image", config.API, config.Cx, safeQuery)
+		url = fmt.Sprintf("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&searchType=image", API, Cx, safeQuery)
 	}
 
 	request, err := http.NewRequest("GET", url, nil)
