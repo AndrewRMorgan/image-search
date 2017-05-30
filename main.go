@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,9 +14,10 @@ import (
 )
 
 var (
-	//db *sql.DB
-	err    error
-	config Config
+	db      *sql.DB
+	err     error
+	config  Config
+	history History
 )
 
 type GoogleAPIResponse struct {
@@ -45,11 +47,16 @@ type Image struct {
 type Config struct {
 	API string
 	Cx  string
+	Db  string
 }
 
 type History struct {
-	Term string `json:"term"`
-	When string `json:"when"`
+	Searches []Search
+}
+
+type Search struct {
+	Term string    `json:"term"`
+	When time.Time `json:"when"`
 }
 
 func main() {
@@ -59,16 +66,14 @@ func main() {
 	err = decoder.Decode(&config)
 	check(err)
 
-	//TODO: History function.
+	databaseURI := config.Db
 
-	//databaseURI := config.db
+	db, err = sql.Open("mysql", databaseURI)
+	check(err)
+	defer db.Close()
 
-	//db, err = sqp.Open("mysql", databaseURI)
-	//check(err)
-	//defer db.Close()
-
-	//err = db.Ping()
-	//check(err)
+	err = db.Ping()
+	check(err)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -84,6 +89,8 @@ func main() {
 
 func getQuery(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	query := ps.ByName("queries")
+
+	addSearch(query)
 
 	queryValues := req.URL.Query()
 	offset := queryValues.Get("offset")
@@ -124,7 +131,30 @@ func getQuery(res http.ResponseWriter, req *http.Request, ps httprouter.Params) 
 }
 
 func getLatest(res http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	// err = db.QueryRow("SELECT term, when FROM history ORDER BY when LIMIT 10").Scan()
+	var (
+		term    string
+		when    time.Time
+		history History
+	)
+
+	rows, err := db.Query("SELECT term_value, when_value FROM history ORDER BY when_value DESC LIMIT 10")
+	check(err)
+	defer rows.Close()
+	for rows.Next() {
+		err := rows.Scan(&term, &when)
+		check(err)
+		history.Searches = append(history.Searches, Search{
+			Term: term,
+			When: when,
+		})
+	}
+	err = rows.Err()
+	check(err)
+
+	js, err := json.Marshal(history.Searches)
+	check(err)
+	res.Header().Set("Content-Type", "application/json")
+	res.Write(js)
 }
 
 func index(res http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -148,6 +178,11 @@ func addImages(dataArr []Item) ImageList {
 			Context:   elem.Image.ContextLink,
 		})
 	}
-
 	return imageList
+}
+
+func addSearch(term string) {
+	var when = time.Now().Format("2006-01-02 15:04:05")
+	_, err := db.Exec("INSERT INTO history(term_value, when_value) VALUES(?, ?)", term, when)
+	check(err)
 }
