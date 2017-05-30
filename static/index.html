@@ -19,13 +19,21 @@
       	<ul>3) I can get a list of the most recently submitted search strings.</ul>
       </blockquote>
       <h3>Example creation usage:</h3>
-      <code>https://morning-retreat-24523.herokuapp.com/new/https://www.google.com</code><br/>
+      <code>https://mysterious-plateau-36613.herokuapp.com/api/imagesearch/funny%20dog%20photos</code><br/>
       <h3>Example creation output:</h3>
-      <code>{ "original_url":"https://www.google.com", "short_url":"https://morning-retreat-24523.herokuapp.com/get/3578" }</code>
-      <h3>Usage:</h3>
-      <code>https://morning-retreat-24523.herokuapp.com/get/3578</code>
-      <h3>Will redirect to:</h3>
-      <code>https://www.google.com/</code>
+      <code>{
+url: "https://i.ytimg.com/vi/GF60Iuh643I/hqdefault.jpg",
+snippet: "Funny Dogs - A Funny Dog Videos Compilation 2015 - YouTube",
+thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6qlPomJo0DJyIx5gyvyeqQZyRJHkcPdmnAXXVwRGN_Z6v63XoHQvcj3w",
+context: "https://www.youtube.com/watch?v=GF60Iuh643I"
+}</code>
+      <h3>Example to get the most recently submitted search strings:</h3>
+      <code>https://mysterious-plateau-36613.herokuapp.com/api/latest/imagesearch</code>
+      <h3>Will output:</h3>
+      <code>{
+term: "funny dog photos",
+when: "2017-05-30T10:01:12Z"
+}</code>
     </div>
   </body>
 </html>
